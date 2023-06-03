@@ -32,6 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     const listItem = document.createElement('li');
                     listItem.textContent = `Name: ${res.data[i].name}, Email: ${res.data[i].email}, Phone: ${res.data[i].phone}`;
                     userList.appendChild(listItem);
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = 'Edit';
+                    editBtn.addEventListener('click', () => {
+                        editUser(res.data[i]._id, listItem);
+                    });
+                    listItem.appendChild(editBtn);
+
                     const deleteBtn = document.createElement('button');
                     deleteBtn.textContent = 'Delete';
                     deleteBtn.addEventListener('click', () => {
@@ -68,4 +75,14 @@ document.addEventListener('DOMContentLoaded', () => {
             })
             .catch((err) => console.log(err));
     }
+
+    function editUser(userId, listItem) {
+        const newName = prompt('Enter new name:');
+        axios
+          .put(`https://crudcrud.com/api/33774df2b1364c7f942135b331f95bc0/appointmentDataNEW/${userId}`, { name: newName })
+          .then(() => {
+            listItem.firstChild.textContent = `Name: ${newName}, Email: ${listItem.firstChild.textContent.split(',')[1]}, Phone: ${listItem.firstChild.textContent.split(',')[2]}`;
+          })
+          .catch((err) => console.log(err));
+      }
 });
